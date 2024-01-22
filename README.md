@@ -1,10 +1,12 @@
 Der folgende Home Assistant YAML-Code saldiert den Ertrag / Verbrauch eines 3-phasigen Stromzählers, der mit einem Shelly 3EM gemessen wird.
 
-Die daraus resultierenden Custom Sensoren "Netzbezug" und "Netzeinspeisung" werden entsprechend beim Energie-Dashboard hinterlegt.
+Die daraus resultierenden Custom Sensoren "Netzbezug" und "Netzeinspeisung" werden entsprechend beim Energie-Dashboard hinterlegt:
 
 ![screenshot1](energie-dashboard-einstellungen.png?raw=true "screenshot1")
 
-Hinweis: Alle "shelly3main" sind entsprechend gegen den von dir gewählten Sensornamen zu ersetzen:
+**Yaml**
+
+Hinweis: Alle "shelly3main" sind im folgenden Code gegen den von dir gewählten Sensornamen zu ersetzen:
 
 ```
   - trigger:

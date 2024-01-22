@@ -129,6 +129,26 @@ Es hat lange gebraucht bis der Code das gewünschte Ergebnis lieferte. Insbesond
 
 Ansonsten sieht man, dass der eine Custom Sensor jede Minute bei Sekunde 59 berechnet wird und der andere jede Minute bei Sekunde 0. Auf die Art konnte ich vermeiden, dass beide Berechnungen gleichzeitig erfolgen und schlicht mit falschen Werten gerechnet wurde. Denn dazu muss man wissen, dass Custom Sensoren ohne einen "time_pattern" immer dann aktualisiert werden, wenn einer der im Jinja2-Code (die Bedingungen und Berechnungen) enthaltenen Sensoren einen Wert zurückgeben. Ich dachte zu Anfang fälschlicherweise, dass es grundsätzlich einen festen Intervall gibt. Beispielsweise addiere ich im Custom Sensor "Phasenbezug" die Sensoren "channel_a_energy", "channel_b_energy" und "channel_c_energy". Ohne "time_pattern" würde dadurch dieser Custom Sensor alle 5 Sekunden berechnet, je nachdem wie oft der Shelly den jeweiligen Wert zurückgegeben hat. Abgesehen davon, dass mir dass meine Berechnungen kaputt machte (da die Formel die Differenz seit dem letzten Messwert als Grundlage hat), explodierte dann logischerweise auch die Datenbankgröße. Daher: Bei der Berechnung mehrerer Sensoren ohne "time_pattern" arbeiten!
 
-PS: Wer mag kann natürlich "Phasenbezug" und "Phasenleistung" auf die "recorder > exclude"-Liste packen, damit die nicht langfristig in der Datenbank vorgehalten werden.
+Hier ein anderes Beispiel, wo ich mit einem weiteren 3EM die drei Phasen meiner Wärmepumpe erfasse und das aber nur alle 5 Minuten, was ebenfalls massig Datenbankeinträge spart:
 
+```
+  - trigger:
+      - platform: time_pattern
+        minutes: "/5"
+    sensor:
+    - name: Wärmepumpe Summe
+      unique_id: shelly3wp_energy
+      unit_of_measurement: 'kWh'
+      state: >-
+        {#- on reboot some sensors do not return a number (instead they return "unknown" or "unavailable") -#}
+        {%- if is_number(states("sensor.shelly3wp_channel_a_energy")) and is_number(states("sensor.shelly3wp_channel_b_energy")) and is_number(states("sensor.shelly3wp_channel_c_energy")) -%}
+          {{ (states("sensor.shelly3wp_channel_a_energy") | float + states("sensor.shelly3wp_channel_b_energy") | float + states("sensor.shelly3wp_channel_c_energy") | float) | round(2) }}
+        {%- else -%}
+          unavailable
+        {%- endif -%}
+      device_class: energy
+      state_class: total_increasing
+```
+
+PS: Wer mag kann natürlich "Phasenbezug" und "Phasenleistung" auf die "recorder > exclude"-Liste packen, damit die nicht langfristig in der Datenbank vorgehalten werden.
 

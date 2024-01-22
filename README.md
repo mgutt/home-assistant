@@ -129,7 +129,7 @@ Es hat lange gebraucht bis der Code das gewünschte Ergebnis lieferte. Insbesond
 
 Ansonsten sieht man, dass der eine Custom Sensor jede Minute bei Sekunde 59 berechnet wird und der andere jede Minute bei Sekunde 0. Auf die Art konnte ich vermeiden, dass beide Berechnungen gleichzeitig erfolgen und schlicht mit falschen Werten gerechnet wurde. Denn dazu muss man wissen, dass Custom Sensoren ohne einen "time_pattern" immer dann aktualisiert werden, wenn einer der im Jinja2-Code (die Bedingungen und Berechnungen) enthaltenen Sensoren einen Wert zurückgeben. Ich dachte zu Anfang fälschlicherweise, dass es grundsätzlich einen festen Intervall gibt. Beispielsweise addiere ich im Custom Sensor "Phasenbezug" die Sensoren "channel_a_energy", "channel_b_energy" und "channel_c_energy". Ohne "time_pattern" würde dadurch dieser Custom Sensor alle 5 Sekunden berechnet, je nachdem wie oft der Shelly den jeweiligen Wert zurückgegeben hat. Abgesehen davon, dass mir dass meine Berechnungen kaputt machte (da die Formel die Differenz seit dem letzten Messwert als Grundlage hat), explodierte dann logischerweise auch die Datenbankgröße. Daher: Bei der Berechnung mehrerer Sensoren ohne "time_pattern" arbeiten!
 
-Hier ein anderes Beispiel, wo ich mit einem weiteren 3EM die drei (pro Phase) Verbrauchswerte meiner Wärmepumpe addiere und das aber nur alle 5 Minuten mache, was ebenfalls massig Datenbankeinträge spart:
+Hier ein anderes Beispiel, wo ich mit einem weiteren 3EM die drei Verbrauchswerte der Phasen meiner Wärmepumpe addiere und das aber nur alle 5 Minuten mache, was ebenfalls massig Datenbankeinträge spart:
 
 ```
   - trigger:
@@ -150,5 +150,5 @@ Hier ein anderes Beispiel, wo ich mit einem weiteren 3EM die drei (pro Phase) Ve
       state_class: total_increasing
 ```
 
-PS: Langfristig irrelvante Werte wie "Phasenbezug" und "Phasenleistung", aber auch die ganzen realen Sensoren (in meinen Beispielen shelly3main.* oder shelly3wp.*) sollte man auf die "recorder > exclude"-Liste packen, damit die nicht alle in der Datenbank gespeichert werden.
+PS: Langfristig irrelevante Werte wie "Phasenbezug" und "Phasenleistung", aber auch die ganzen realen Sensoren (in meinen Beispielen shelly3main.* oder shelly3wp.*) sollte man auf die "recorder > exclude"-Liste packen, damit die nicht alle in der Datenbank gespeichert werden.
 

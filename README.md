@@ -150,5 +150,5 @@ Hier ein anderes Beispiel, wo ich mit einem weiteren 3EM die drei (pro Phase) Ve
       state_class: total_increasing
 ```
 
-PS: Wer mag kann natürlich "Phasenbezug" und "Phasenleistung" auf die "recorder > exclude"-Liste packen, damit die nicht langfristig in der Datenbank vorgehalten werden.
+PS: Langfristig irrelvante Werte wie "Phasenbezug" und "Phasenleistung", aber auch die ganzen realen Sensoren (in meinen Beispielen shelly3main.* oder shelly3wp.*) sollte man auf die "recorder > exclude"-Liste packen, damit die nicht alle in der Datenbank gespeichert werden.
 

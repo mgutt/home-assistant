@@ -123,6 +123,8 @@ Hinweis: Alle "shelly3main" sind im folgenden Code gegen den von dir gewählten 
       state_class: measurement
 ```
 
+**Details**
+
 Es hat lange gebraucht bis der Code das gewünschte Ergebnis lieferte. Insbesondere der Else-Teil, der ein "unavailable" zurückgibt, wenn der Sensor nicht erreichbar ist, hat geholfen, dass die Werte der Custom Sensoren bei einem Neustart von Home Assistant nicht einfach genullt wurden.
 
 Ansonsten sieht man, dass der eine Custom Sensor jede Minute bei Sekunde 59 berechnet wird und der andere jede Minute bei Sekunde 0. Auf die Art konnte ich vermeiden, dass beide Berechnungen gleichzeitig erfolgen und schlicht mit falschen Werten gerechnet wurde.
